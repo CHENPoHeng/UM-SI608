@@ -9,3 +9,5 @@ To record my progress in taking SI608 and also practice git and github
     + (normalized) betweenness
     + influence range (input domain)
     + prestige
+-hw2
+    + [clustering coefficient](https://github.com/gephi/gephi/wiki/Average-Clustering-Coefficient)
