@@ -25,6 +25,11 @@ if(len(i)) data = data[-i,]
 
 ## see the investor and startup distribution
 ## investor: how many investment investor makes?
+
+###### only focus on USA's data (49% of data)
+i = which(data$company_country_code == 'USA' & data$investor_country_code == 'USA')
+if(len(i)) data = data[i, ]
+
 source('02plotBasic.R')
 
 # what kind of industry gets more investment
@@ -32,92 +37,22 @@ source('02plotBasic.R')
 ###########################################################
 ## Goal: to plot graph of top 10 investor/startup in USA ##
 ###########################################################
-# only focus on USA's data (49% of data)
-i = which(data$company_country_code == 'USA' & data$investor_country_code == 'USA')
-if(len(i)) data = data[i, ]
 
 ## plot top-n investor graph
 N = 10
 source('03plotGraph_investor.R')
 
 ## plot top-n startup graph
-N = 10
+N = 50
 source('03plotGraph_startup.R')
 
 
+#####################################################
+## Goal: to plot Region graph of investor/startup  ##
+#####################################################
+# do investors have any location preference?
+source('04plotLocPref.R')
 
-#############################################
-## Goal: to plot graph of investor/startup ##
-#############################################
-d = data
-# why some are startup but also investor?
-# they are middle layer: investor -> middle layer -> startup
-i = which(d$company_name %in% d$investor_name)
-m = d[i, ]
-d = d[-i,]
-
-
-# only focus on USA's data
-i = which(d$company_country_code == 'USA' & d$investor_country_code == 'USA')
-print(len(i) / nrow(d))
-if(len(i)) d = d[i, ]
-# only focus on SF data
-i = which(d$company_region == 'SF Bay Area' & d$investor_region == 'SF Bay Area')
-print(len(i) / nrow(d))
-if(len(i)) d = d[i, ]
-
-
-
-# tmp = d %>% group_by(company_name) %>% summarize(num_investment = n()) %>% 
-#     filter(num_investment > mean(num_investment))
-tmp = d %>% group_by(investor_name) %>% summarize(num_investment = n()) #%>% 
-    # filter(num_investment > quantile(num_investment, 0.99))
-
-
-i = which(d$investor_name %in% tmp$investor_name)
-if(len(i)) d = d[i, ]
-nrow(d)/nrow(data)
-
-## create name region dataframe
-tmp = data.table(region = c(d$company_region, d$investor_region),
-                 name = c(d$company_name, d$investor_name))
-tmp = unique(tmp)
-i = which(tmp$region == '')
-if(len(i)) tmp = tmp[-i, ]
-i = which(tmp$name == '')
-if(len(i)) tmp = tmp[-i, ]
-name_region = tmp
-
-# use clusters to check giant component
-# then take a look at connected component and other small connected components
-
-from = d$investor_name
-to = d$company_name
-all_edges = data.frame(from = from, to = to)
-g = graph.data.frame(all_edges, directed = F)
-
-# create vertex attributes
-V(g)$region = name_region[match(names(V(g)), name_region$name),]$region
-
-## create region color
-region_color = data.frame(region = unique(V(g)$region), color = 1:len(unique(V(g)$region)))
-V(g)$color = region_color[match(V(g)$region, region_color$region),]$color
-# specify layout
-layout = layout_as_tree(g)
-# png('investor.png')
-plot(g, layout = layout, vertex.size = 3,
-     vertex.label = '', vertex.color = V(g)$color)
-# title('Y Combinator')
-# dev.off()
-
-
-
-
-
-
-
-# title('80%')
-# legend('topleft', legend = region_color$region, col = region_color$color, )
 
 ####################################
 ## Goal: to plot tripartite graph ##

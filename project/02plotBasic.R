@@ -26,4 +26,4 @@ ggplot(data = p) +
     scale_y_log10('number of investor') +
     ggtitle('Investor vs Startup - Investment Distribution') +
     theme_light()
-ggsave('investor_startup.png')
+ggsave('plot/investor_startup.png')
