@@ -30,11 +30,11 @@ g.degree = degree(g, v = V(g), mode = 'in',
                   loops = TRUE, normalized = FALSE)
 
 layout = layout.fruchterman.reingold(g)
-png('top_startup_wo.png', width = 640, height = 640)
+png('plot/top_startup_wo.png', width = 1024, height = 1024)
 plot(g, layout = layout, vertex.size = map(g.degree, c(1,5)),
      vertex.label = NA, vertex.color = V(g)$color,
      edge.arrow.size = .1)
-title(sprintf('Top %s Investor Graph', N))
+title(sprintf('Top %s Startup Graph', N))
 dev.off()
 
 
@@ -61,10 +61,10 @@ g.degree = degree(g, v = V(g), mode = 'in',
                   loops = TRUE, normalized = FALSE)
 
 layout = layout.fruchterman.reingold(g)
-png('top_startup_single.png', width = 640, height = 640)
+png('plot/top_startup_single.png', width = 1024, height = 1024)
 plot(g, layout = layout, vertex.size = map(g.degree,c(1,5)),
      vertex.label = NA, vertex.color = ifelse(V(g)$type,'blue','orange'),
      edge.arrow.size = .1)
-title(sprintf('Top %s Investor Graph', N))
+title(sprintf('Top %s Startup Graph', N))
 dev.off()
 
