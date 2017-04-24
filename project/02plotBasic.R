@@ -23,7 +23,7 @@ ggplot(data = p) +
     geom_point(aes(x = num_investment, y = num_investor, col = 'Investor'), size = 0.5) +
     geom_point(aes(x = num_investment, y = num_company, col = 'Start-up'), size = 0.5) +
     scale_x_log10('number of investment') +
-    scale_y_log10('number of investor') +
+    scale_y_log10('number of organization') +
     ggtitle('Investor vs Startup - Investment Distribution') +
     theme_light()
 ggsave('plot/investor_startup.png')
